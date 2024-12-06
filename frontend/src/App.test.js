@@ -1,8 +1,8 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 test('renders learn react link', () => {
-    render(_jsx(App, {}));
+    render(React.createElement(App, null));
     const linkElement = screen.getByText(/learn react/i);
     expect(linkElement).toBeInTheDocument();
 });
