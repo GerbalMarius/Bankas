@@ -1,7 +1,8 @@
-package org.isp.bankas.user;
+package org.isp.bankas.role;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.isp.bankas.user.User;
 
 import java.util.Collection;
 import java.util.HashSet;
