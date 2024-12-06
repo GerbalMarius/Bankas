@@ -1,12 +1,13 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() : any {
-  return (
-    <div>
-      <h1>Labs</h1>
-    </div>
-  );
+class App extends React.Component {
+
+    render() {
+        return (
+            <h1>Labas</h1>
+        )
+    }
 }
 
 export default App;
