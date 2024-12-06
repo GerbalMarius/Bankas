@@ -38,7 +38,6 @@ public final class User implements UserDetails {
     private ZonedDateTime lastLoginDate;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "role_id")
     private Role role;
 
@@ -57,7 +56,9 @@ public final class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        var auth  = new SimpleGrantedAuthority(role.getName());
+
+        return List.of(auth);
     }
 
     @Override
