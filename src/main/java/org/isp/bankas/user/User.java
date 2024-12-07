@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public final class User implements UserDetails {
 
     @Id
-    @Column(name = "pin_number", unique = true, nullable = false)
+    @Column(name = "pin_number", unique = true, nullable = false, length = 50)
     private String pinNumber;
 
     @Column(nullable = false, length = 80)
@@ -41,10 +41,10 @@ public final class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "user_pin", referencedColumnName = "pin_number")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
     )
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
-
+        this("", "", "", "", null);
     }
 
     public User(String pinNumber,String name, String email, String address, ZonedDateTime lastLoginDate) {

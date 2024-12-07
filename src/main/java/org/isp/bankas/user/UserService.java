@@ -46,6 +46,7 @@ public class UserService {
         return roleRepository.save(new Role(roleName));
     }
 
+    //TODO : ADD PIN ENCR
     public boolean pinMatches(UserDTO formData, User actualUser) {
         return passwordEncoder.matches(formData.getPinNumber(), actualUser.getPinNumber());
     }
@@ -55,7 +56,7 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-    public User findByEmailAndPinNumber(String email, String pinNumber) {
-        return userRepository.findByEmailAndPinNumber(email, pinNumber);
+    public User findByEmailOrPinNumber(String email, String pinNumber) {
+        return userRepository.findByEmailOrPinNumber(email, pinNumber);
     }
 }

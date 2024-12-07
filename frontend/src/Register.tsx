@@ -12,6 +12,7 @@ const Register = () => {
     });
     const [error, setError] = useState<string>('');
     const [success, setSuccess] = useState<string>('');
+    const [errorMessages, setErrorMessages] = useState<any>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -21,22 +22,28 @@ const Register = () => {
         });
     };
 
+    const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {value } = e.target;
+        if (/^\d+$/.test(value)) {
+            setFormData({
+                ...formData,
+                pinNumber: value,
+            })
+        }
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(formData);
         try {
             const response = await axios.post(
                 "http://localhost:8080/register",
                 formData,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    withCredentials : true,
-                }
+                { withCredentials: true }
             );
             if (response.status === 201) {
-                setSuccess("User registered successfully");
-                setError("");
+                setSuccess('User ' + response.data.email + " Registered!");
+                setError(""); // Clear any previous error message
                 setFormData({
                     pinNumber: "",
                     name: "",
@@ -45,14 +52,25 @@ const Register = () => {
                 });
             }
         } catch (err) {
+            // Handle AxiosError specifically
             if (err instanceof AxiosError) {
-                // Handle AxiosError specifically
-                setError(err.response?.data.message || "Registration failed");
+                if (err.response?.status === 400) {
+                    // Handle error message from backend
+                    if (err.response.data === "User already registered") {
+                        setError("User already registered");
+                    } else {
+                        // If other backend errors (like validation errors)
+                        setErrorMessages(err.response.data);
+                    }
+                } else {
+                    setError("An unexpected error occurred.");
+                }
             } else {
                 setError("An unexpected error occurred.");
             }
         }
     };
+
 
     return (
         <Container>
@@ -68,10 +86,12 @@ const Register = () => {
                                 placeholder="Enter your PIN number"
                                 name="pinNumber"
                                 value={formData.pinNumber}
-                                onChange={handleChange}
-                                required
+                                onChange={handlePinChange}
                             />
                         </FormGroup>
+                        {
+                            errorMessages.pinNumber && (<div className={"text-danger"}>{errorMessages.pinNumber}</div>)
+                        }
 
                         <FormGroup>
                             <Label for="formName">Name</Label>
@@ -82,10 +102,12 @@ const Register = () => {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                required
+
                             />
                         </FormGroup>
-
+                        {
+                            errorMessages.name && (<div className={"text-danger"}>{errorMessages.name}</div>)
+                        }
                         <FormGroup>
                             <Label for="formEmail">Email</Label>
                             <Input
@@ -95,9 +117,11 @@ const Register = () => {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                required
                             />
                         </FormGroup>
+                        {
+                            errorMessages.email && (<div className={"text-danger"}>{errorMessages.email}</div>)
+                        }
 
                         <FormGroup>
                             <Label for="formAddress">Address</Label>
@@ -108,9 +132,12 @@ const Register = () => {
                                 name="address"
                                 value={formData.address}
                                 onChange={handleChange}
-                                required
+
                             />
                         </FormGroup>
+                        {
+                            errorMessages.address && (<div className={"text-danger"}>{errorMessages.address}</div>)
+                        }
 
                         <Button color="primary" type="submit">
                             Register
