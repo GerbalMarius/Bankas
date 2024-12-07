@@ -9,8 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -27,18 +29,19 @@ public final class User implements UserDetails {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, unique = true, length = 80)
-    private String password;
-
     @Column(nullable = false, length = 80)
     private String address;
 
     @Column(name = "last_login_date", nullable = false)
     private ZonedDateTime lastLoginDate;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_pin", referencedColumnName = "pin_number")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
+    )
+    private List<Role> roles;
 
     public User() {
 
@@ -55,18 +58,23 @@ public final class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        var auth  = new SimpleGrantedAuthority(role.getName());
+        return  roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
 
-        return List.of(auth);
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return pinNumber;
     }
 
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = new ArrayList<>(roles);
     }
 }

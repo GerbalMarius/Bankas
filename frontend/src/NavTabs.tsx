@@ -9,8 +9,9 @@ class NavTabs extends React.Component<Props> {
 
     render() {
         const tabs = [
-            {name: "Pagrindinis Puslapis", route: "/home"},
+            {name: "Pagrindinis Puslapis", route: "/"},
             {name: "Apie mus", route: "/about"},
+            {name: "Registruotis", route: "/register"},
         ];
 
 

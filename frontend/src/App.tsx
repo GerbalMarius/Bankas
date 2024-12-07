@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import About from "./About";
 import NavTabs from "./NavTabs";
 import Home from "./Home";
+import Register from "./Register";
 
 class App extends React.Component {
 
@@ -19,6 +20,7 @@ class App extends React.Component {
                     <Routes>
                         <Route path={"/home"} element={<Home/>}/>
                         <Route path={"/about"} element={<About/>} />
+                        <Route path={"/register"} element={<Register/>}/>
                     </Routes>
                 </main>
             </Router>

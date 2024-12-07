@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.isp.bankas.user.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,18 +20,22 @@ public final class Role {
     @Column(name = "role_name", length = 50, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<User> users;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
     public Role() {
-
+        this("", new ArrayList<>());
+    }
+    public Role(String name) {
+        this.name = name;
+        this.users = new ArrayList<>();
     }
     public Role(String name, Collection<? extends User> users) {
         this.name = name;
-        this.users = new HashSet<>(users);
+        this.users = new ArrayList<>(users);
     }
 
     public void setUsers(Collection<? extends User> users) {
-        this.users = new HashSet<>(users);
+        this.users = new ArrayList<>(users);
     }
 }
