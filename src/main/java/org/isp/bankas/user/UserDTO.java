@@ -7,15 +7,14 @@ import lombok.Data;
 
 @Data
 public final class UserDTO {
-    @NotEmpty(message = "Your pin number should not be empty.")
-    @Pattern(regexp = "^\\d+$", message = "Only numbers for pin are allowed.")
+    @NotEmpty(message = "Pin number should not be empty.")
+    @Pattern(regexp = "^\\d*$", message = "Only numbers for pin are allowed.")
     private String pinNumber;
 
     @NotEmpty(message = "Name should not be empty")
     private String name;
 
-    @NotEmpty(message = "Your password should not be empty.")
-    @Email(message = "Please provide a valid email address.")
+    @Email( regexp = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*([A-Za-z]{2,})$", message = "Please provide a valid email address.")
     private String email;
 
     @NotEmpty(message = "Your address should not be empty.")

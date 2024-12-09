@@ -1,6 +1,6 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../src/index.css';
+import '../index.css';
 
 
 const Home = () => {

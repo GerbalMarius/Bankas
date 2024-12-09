@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import axios, { AxiosError } from "axios";
-import { Col, Container, Row, Form, FormGroup, Label, Button, Input } from "reactstrap";
+import React, {useState} from "react";
+import axios, {AxiosError} from "axios";
+import {Col, Container, Row, Form, FormGroup, Label, Button, Input} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import {BACKEND_PREFIX} from "../App";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -15,31 +16,19 @@ const Register = () => {
     const [errorMessages, setErrorMessages] = useState<any>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData({
             ...formData,
             [name]: value,
         });
     };
-
-    const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {value } = e.target;
-        if (/^\d+$/.test(value)) {
-            setFormData({
-                ...formData,
-                pinNumber: value,
-            })
-        }
-    }
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData);
         try {
             const response = await axios.post(
-                "http://localhost:8080/register",
+                BACKEND_PREFIX + "/register",
                 formData,
-                { withCredentials: true }
+                {withCredentials: true}
             );
             if (response.status === 201) {
                 setSuccess('User ' + response.data.email + " Registered!");
@@ -86,7 +75,7 @@ const Register = () => {
                                 placeholder="Enter your PIN number"
                                 name="pinNumber"
                                 value={formData.pinNumber}
-                                onChange={handlePinChange}
+                                onChange={handleChange}
                             />
                         </FormGroup>
                         {
@@ -112,7 +101,7 @@ const Register = () => {
                             <Label for="formEmail">Email</Label>
                             <Input
                                 id="formEmail"
-                                type="email"
+                                type="text"
                                 placeholder="Enter your email"
                                 name="email"
                                 value={formData.email}

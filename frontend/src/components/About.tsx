@@ -1,8 +1,8 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../src/index.css';
+import '../index.css';
 
-const About  = () => {
+const About = () => {
     return (
         <div style={{marginTop: '200px'}} className="container-fluid">
             <h1>About Us</h1>

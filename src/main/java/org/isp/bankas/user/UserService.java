@@ -50,12 +50,15 @@ public class UserService {
     public boolean pinMatches(UserDTO formData, User actualUser) {
         return passwordEncoder.matches(formData.getPinNumber(), actualUser.getPinNumber());
     }
+
     public User findByPinNumber(String pinNumber) {
         return userRepository.findByPinNumber(pinNumber);
     }
+
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public User findByEmailOrPinNumber(String email, String pinNumber) {
         return userRepository.findByEmailOrPinNumber(email, pinNumber);
     }
