@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios, {AxiosError} from "axios";
 import {BACKEND_PREFIX} from "../App";
 import {Button, Col, Container, Form, FormGroup, Input, Label, Row} from "reactstrap";
+import {useLocation} from "react-router-dom";
 
 
 const Login = () => {
@@ -12,6 +13,15 @@ const Login = () => {
 
     const [error, setError] = useState<string>('')
     const [success, setSuccess] = useState<string>('')
+    const location = useLocation()
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const errorParam = params.get("error");
+        if (errorParam) {
+            setError("Login error " + decodeURIComponent(errorParam))
+        }
+    }, [location.search])
 
 
     const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +50,7 @@ const Login = () => {
             }
         } catch (err) {
             if (err instanceof AxiosError) {
-                if (err.response?.data === "Email or PIN is mandatory"){
-                    setError("Email or PIN is mandatory")
-                }
+                setError(err.response?.data || "Unexpected error occured.")
             } else {
                 setError("Unexpected error occured.")
             }
@@ -72,7 +80,7 @@ const Login = () => {
                             <Label for={"pinNumber"}>PIN number</Label>
                             <Input
                                 id={"pinNumber"}
-                                type={"text"}
+                                type={"password"}
                                 placeholder={"Enter your PIN."}
                                 name={"pinNumber"}
                                 value={loginData.pinNumber}

@@ -6,8 +6,13 @@ import org.isp.bankas.role.RoleRepository;
 import org.isp.bankas.user.User;
 import org.isp.bankas.user.UserDTO;
 import org.isp.bankas.user.UserService;
+import org.isp.bankas.utils.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = BankApplication.REACT_FRONT_URL, allowCredentials = "true")
@@ -25,10 +29,13 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    private final AuthenticationManager authenticationManager;
+
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/register")
@@ -49,23 +56,26 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser( @RequestBody UserDTO transferredData) {
+    public ResponseEntity<String> loginUser(@RequestBody UserDTO transferredData) {
         try {
-            if (transferredData.getEmail().isEmpty() || transferredData.getPinNumber().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email or PIN is mandatory");
+            if (Strings.isNullOrEmpty(transferredData.getEmail()) ||
+                    Strings.isNullOrEmpty(transferredData.getPinNumber())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email and PIN number are required.");
             }
 
-            User foundUser = userService.findByEmail(transferredData.getEmail());
-            if(foundUser == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User %s not found".formatted(transferredData.getEmail()));
-            }
-            if (!Objects.equals(transferredData.getPinNumber(), foundUser.getPinNumber())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("PIN number does not match");
-            }
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(transferredData.getEmail(), transferredData.getPinNumber())
+            );
 
-            return ResponseEntity.status(HttpStatus.OK).body("Logged in successfully");
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login failed: " + " " + e.getMessage());
+            if (authentication.isAuthenticated()) {
+                return ResponseEntity.ok("Logged in successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed.");
+            }
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred during login");
         }
     }
 

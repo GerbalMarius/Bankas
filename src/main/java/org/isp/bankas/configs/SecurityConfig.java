@@ -1,11 +1,13 @@
 package org.isp.bankas.configs;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.isp.bankas.BankApplication;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.isp.bankas.auth.UserAuthProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -13,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,9 +25,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final DetailsService userDetailsService;
+    private final UserAuthProvider userAuthProvider;
 
-    public SecurityConfig(DetailsService userDetailsService) {
+    public SecurityConfig(DetailsService userDetailsService, UserAuthProvider userAuthProvider) {
         this.userDetailsService = userDetailsService;
+        this.userAuthProvider = userAuthProvider;
     }
 
     @Bean
@@ -41,13 +46,23 @@ public class SecurityConfig {
                         .requestMatchers("/register").permitAll()
                         .anyRequest().permitAll()
                 )
+                .authenticationProvider(userAuthProvider)
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
-                        .permitAll()
+                        .loginProcessingUrl("/login")
+                        .usernameParameter("email")
+                        .passwordParameter("pinNumber")
+                        .successHandler((req, resp, auth) -> {
+                            resp.setStatus(HttpServletResponse.SC_OK);
+                            resp.getWriter().write("Logged in successfully");
+                        })
+                        .failureHandler((req, resp, e) -> {
+                            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            resp.getWriter().write(e.getMessage());
+                        })
+
                 ).logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessHandler(new SimpleUrlLogoutSuccessHandler())
                         .permitAll()
                 ).sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
@@ -57,6 +72,11 @@ public class SecurityConfig {
 
                 );
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Bean
