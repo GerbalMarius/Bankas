@@ -1,5 +1,6 @@
 package org.isp.bankas.auth;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.isp.bankas.BankApplication;
 import org.isp.bankas.role.RoleRepository;
@@ -14,6 +15,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,15 +54,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserDTO transferredData) {
+    public ResponseEntity<String> loginUser(@RequestBody UserDTO transferredData, HttpSession session) {
         Error validationError = userService.validateLoginCredentials(transferredData);
         if (validationError != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                  .body(validationError.getMessage());
         }
         User actualUser = userService.findByEmail(transferredData.getEmail());
+        actualUser.setLastLoginDate(ZonedDateTime.now(ZoneId.of("Europe/Vilnius")));
         userService.setCurrentUser(actualUser);
-        System.out.println(userService.getCurrentUser().get().getEmail());
+        session.setAttribute();
         return ResponseEntity.ok("Login successful");
     }
 
