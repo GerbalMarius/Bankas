@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public final class User implements UserDetails {
 
     @Id
-    @Column(name = "pin_number", unique = true, nullable = false, length = 50)
+    @Column(name = "pin_number", unique = true, nullable = false, length = 80)
     private String pinNumber;
 
     @Column(nullable = false, length = 80)

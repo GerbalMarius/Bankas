@@ -5,8 +5,13 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+/**
+ * Used for transfering user data between the display and service layers
+ * For jakarta validation constraints to work use @Valid annotation in method parameters
+ * Not marked final, could provide an extension for other types of users.
+ */
 @Data
-public final class UserDTO {
+public  class UserDTO {
     @NotEmpty(message = "Pin number should not be empty.")
     @Pattern(regexp = "^\\d*$", message = "Only numbers for pin are allowed.")
     private String pinNumber;

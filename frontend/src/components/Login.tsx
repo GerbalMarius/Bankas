@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 import {BACKEND_PREFIX} from "../App";
 import {Button, Col, Container, Form, FormGroup, Input, Label, Row} from "reactstrap";
 import {useLocation} from "react-router-dom";
@@ -33,26 +33,60 @@ const Login = () => {
     };
 
     const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent page refresh on form submission
+
         try {
             const response = await axios.post(
-                BACKEND_PREFIX + "/login",
+                BACKEND_PREFIX + "/login", // Backend endpoint
                 loginData,
-                {withCredentials: true}
+                { withCredentials: true } // Include cookies for sessions, if applicable
             );
+
             if (response.status === 200) {
-                setSuccess("Logged in succesfully.")
-                setError("")
+                // Success case
+                setSuccess(response.data.message || "Logged in successfully!"); // Use the backend message if sent
+                setError(""); // Clear any prior error message
                 setLoginData({
                     email: "",
                     pinNumber: ""
-                })
+                });
             }
         } catch (err) {
-            if (err instanceof AxiosError) {
-                setError(err.response?.data || "Unexpected error occured.")
+            if (axios.isAxiosError(err)) {
+                // Handle backend responses properly
+                if (err.response) {
+                    // Backend returned a response with an error code
+                    switch (err.response.status) {
+                        case 400: {
+                            setError(err.response.data);
+                            break;
+                        }
+                        case 401: {
+                            setError(err.response.data);
+                            break;
+                        }
+                        case 403: {
+                            setError(err.response.data);
+                            break;
+                        }
+                        case 500: {
+                            setError(err.response.data);
+                            break;
+                        }
+                        default: {
+                            setError(err.response.data);
+                        }
+                    }
+                } else if (err.request) {
+                    // Request was sent, but no response was received (network or backend issue)
+                    setError("No response from server. Please try again later.");
+                } else {
+                    // Some other error happened while setting up the request
+                    setError(err.message || "Unexpected error occurred.");
+                }
             } else {
-                setError("Unexpected error occured.")
+                // Unknown error (non-axios related)
+                setError("An unknown error occurred. Please try again.");
             }
         }
     };
