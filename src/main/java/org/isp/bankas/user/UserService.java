@@ -40,6 +40,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Helper method for saving setter changes to database.
+     * @param user user , whose changes to save.
+     */
+    public void update(User user){
+        userRepository.save(user);
+    }
+
     private String assignUserRole(UserDTO userDTO) {
         return "USER"; //TODO : should add other roles for extended functionality
     }

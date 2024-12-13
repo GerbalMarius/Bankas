@@ -25,14 +25,10 @@ import java.util.Map;
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
-
-
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public AuthController(UserService userService, RoleRepository roleRepository) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
     }
 
@@ -62,6 +58,7 @@ public class AuthController {
         }
         User actualUser = userService.findByEmail(transferredData.getEmail());
         actualUser.setLastLoginDate(ZonedDateTime.now(ZoneId.of("Europe/Vilnius")));
+        userService.update(actualUser);
         session.setAttribute("user", actualUser.transferToDTO());
         session.setAttribute("roles", actualUser.getRoles());
         return ResponseEntity.ok("Login successful");
