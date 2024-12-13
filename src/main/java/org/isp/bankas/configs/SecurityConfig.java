@@ -25,19 +25,29 @@ public class SecurityConfig{
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Encoder used for passwords ('password' in this case refers to the users pinNumber id).
+     * @return instance of BCRYPT algorithm encoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
+    /**
+     * Configuration to allow multiple http origins and session creation.
+     * @param http builder used for security.
+     * @return access ruleset for server.
+     * @throws Exception in case of unexpected server errs.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
-                ).sessionManagement(session -> session
+                )
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .sessionFixation(conf -> conf.migrateSession())
                         .maximumSessions(-1)

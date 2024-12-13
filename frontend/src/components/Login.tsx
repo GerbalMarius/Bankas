@@ -14,12 +14,12 @@ const Login = () => {
     const [error, setError] = useState<string>('')
     const [success, setSuccess] = useState<string>('')
     const location = useLocation()
-
     useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const errorParam = params.get("error");
-        if (errorParam) {
-            setError("Login error " + decodeURIComponent(errorParam))
+        if (location.search === "?error") {
+            setError("Login error ")
+        }
+        if (location.search === "?logout") {
+            setSuccess("Logged out successfully!")
         }
     }, [location.search])
 

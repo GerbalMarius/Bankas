@@ -12,7 +12,8 @@ class NavTabs extends React.Component<Props> {
             {name: "Pagrindinis Puslapis", route: "/home"},
             {name: "Apie mus", route: "/about"},
             {name: "Registruotis", route: "/register"},
-            {name: "Prisijungti", route: "/login"}
+            {name: "Prisijungti", route: "/login"},
+            {name: "Dabartinis", route: "/current"},
         ];
 
 

@@ -64,6 +64,10 @@ public final class User implements UserDetails {
 
     }
 
+    public UserDTO transferToDTO() {
+        return new UserDTO(pinNumber, name, email, address);
+    }
+
     @Override
     public String getPassword() {
         return pinNumber;

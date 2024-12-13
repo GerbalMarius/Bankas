@@ -1,6 +1,5 @@
 package org.isp.bankas.user;
 
-import lombok.Getter;
 import org.isp.bankas.role.Role;
 import org.isp.bankas.role.RoleRepository;
 import org.isp.bankas.utils.Error;
@@ -9,14 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
-    @Getter
-    private Optional<User> currentUser = Optional.empty();
 
     private final RoleRepository roleRepository;
 
@@ -43,10 +38,6 @@ public class UserService {
         }
 
         return userRepository.save(user);
-    }
-
-    public void setCurrentUser(User user) {
-        this.currentUser = Optional.ofNullable(user);
     }
 
     private String assignUserRole(UserDTO userDTO) {

@@ -62,9 +62,15 @@ public class AuthController {
         }
         User actualUser = userService.findByEmail(transferredData.getEmail());
         actualUser.setLastLoginDate(ZonedDateTime.now(ZoneId.of("Europe/Vilnius")));
-        userService.setCurrentUser(actualUser);
-        session.setAttribute();
+        session.setAttribute("user", actualUser.transferToDTO());
+        session.setAttribute("roles", actualUser.getRoles());
         return ResponseEntity.ok("Login successful");
+    }
+
+    @PostMapping("/out")
+    public ResponseEntity<String> logoutUser(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.ok(BankApplication.REACT_FRONT_URL + "/login?logout");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
