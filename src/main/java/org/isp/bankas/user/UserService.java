@@ -40,6 +40,20 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // Add this method to UserService class
+    public User saveAdmin(UserDTO transferedData) {
+        User admin = new User(passwordEncoder.encode(transferedData.getPinNumber()), transferedData.getName(), transferedData.getEmail(),
+                            transferedData.getAddress(), null);
+    
+        Role adminRole = roleRepository.findByName("ADMIN");
+        if (adminRole == null) {
+            adminRole = assingNewRole("ADMIN");
+        }
+        admin.setRoles(List.of(adminRole));
+    
+        return userRepository.save(admin);
+    }
+
     /**
      * Helper method for saving setter changes to database.
      * @param user user , whose changes to save.
