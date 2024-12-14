@@ -2,6 +2,7 @@ package org.isp.bankas.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.isp.bankas.accounts.BankAccount;
 import org.isp.bankas.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,7 +42,10 @@ public final class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "user_pin", referencedColumnName = "pin_number")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
     )
-    private List<Role> roles = new ArrayList<>();
+    private List<Role> roles;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankAccount> bankAccounts;
 
     public User() {
         this("", "", "", "", null);
@@ -53,6 +57,8 @@ public final class User implements UserDetails {
         this.email = email;
         this.address = address;
         this.lastLoginDate = lastLoginDate == null ? ZonedDateTime.now(ZoneId.of("Europe/Vilnius")) : lastLoginDate;
+        this.roles = new ArrayList<>();
+        this.bankAccounts = new ArrayList<>();
     }
 
 
@@ -80,5 +86,8 @@ public final class User implements UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = new ArrayList<>(roles);
+    }
+    public void setBankAccounts(List<BankAccount> bankAccounts) {
+        this.bankAccounts = new ArrayList<>(bankAccounts);
     }
 }
