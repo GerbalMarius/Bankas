@@ -6,9 +6,80 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.login-btn{
-  background-color: deepskyblue;
-  color: white;
+.btn-container {
+  display: flex;
+  justify-content: center; /* Centers the buttons horizontally */
+  align-items: center;    /* Centers them vertically relative to each other */
+  gap: 10px; /* Spacing between the buttons */
+  top: -50px;
   position: relative;
+  left: 50rem;
 }
+.btn-normal {
+  background-image: linear-gradient(45deg, #6a5ef7, #7366ff);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+.btn-normal:hover {
+  background: linear-gradient(45deg, #574fcf, #6358ea);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+.btn-top-left {
+  position: relative;
+  left: -630px;
+  text-decoration: none;
+    background-image: linear-gradient(45deg, #6a5ef7, #7366ff);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+.btn-top-left:hover {
+  background: linear-gradient(45deg, #574fcf, #6358ea);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.login-btn {
+  background-image: linear-gradient(45deg, #6a5ef7, #7366ff);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+}
+.login-btn:hover {
+  background: linear-gradient(45deg, #574fcf, #6358ea);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+/* Ensure the page takes the full height of the window */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 95vh; /* Full height of the viewport */
+  min-width: 820px;
+}
+
+/* Make the content wrapper grow and fill space */
+.content-wrap {
+  flex: 1; /* Pushes footer to the bottom by taking up remaining space */
+  width: 15rem;
+}
+
+/* Footer styling */
+.page-footer {
+  background-color: #f8f9fa; /* Optional: footer background color */
+  text-align: center;       /* Centered text */
+  padding: 1rem 0;          /* Padding within the footer */
+  border-top: 1px solid #e7e7e7; /* Optional: border at the top */
+}
+
+/* Styling for main content (optional) */
+main {
+  padding: 1rem; /* Optional: add padding for better spacing */
+}
+

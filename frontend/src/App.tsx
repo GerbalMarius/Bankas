@@ -1,10 +1,10 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../src/index.css';
+import  '../src/form-styles.css'
 import "react-router-dom";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import About from "./components/About";
-import NavTabs from "./components/NavTabs";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
@@ -22,20 +22,22 @@ class App extends React.Component {
 
     render() {
         return (
+            <div className={"page-container"}>
             <Router>{}
-            <header>
-                <NavTabs activeTab={window.location.pathname} />{}
-            </header>
+                <div>
                 <main>
                     <Routes>
-                        <Route path={"/home"} element={<Home/>}/>
+                        <Route path={"/"} element={<Home/>}/>
                         <Route path={"/about"} element={<About/>} />
                         <Route path={"/register"} element={<Register/>}/>
                         <Route path={"/login"} element={<Login/>}/>
                         <Route path={"/current"} element={<CurrentUser/>}/>
                     </Routes>
                 </main>
+                </div>
             </Router>
+            </div>
+
         );
     }
 }

@@ -3,6 +3,7 @@ import axios, {AxiosError} from "axios";
 import {Col, Container, Row, Form, FormGroup, Label, Button, Input} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BACKEND_PREFIX} from "../App";
+import {Link} from "react-router-dom";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ const Register = () => {
                 {withCredentials: true}
             );
             if (response.status === 201) {
-                setSuccess('User ' + response.data.email + " Registered!");
+                setSuccess("Registration successful!");
                 setError(""); // Clear any previous error message
                 setFormData({
                     pinNumber: "",
@@ -65,9 +66,10 @@ const Register = () => {
         <Container>
             <Row className="justify-content-center">
                 <Col md={6}>
+                    <Link to="/" className="btn-top-left">Home</Link>
                     <h2>Register</h2>
-                    <Form onSubmit={handleSubmit}>
-                        <FormGroup>
+                    <Form onSubmit={handleSubmit} className="modern-form">
+                        <FormGroup className="form-group">
                             <Label for="formPinNumber">PIN number</Label>
                             <Input
                                 id="formPinNumber"
@@ -76,13 +78,14 @@ const Register = () => {
                                 name="pinNumber"
                                 value={formData.pinNumber}
                                 onChange={handleChange}
+                                className="form-control"
                             />
                         </FormGroup>
-                        {
-                            errorMessages.pinNumber && (<div className={"text-danger"}>{errorMessages.pinNumber}</div>)
-                        }
+                        {errorMessages.pinNumber && (
+                            <div className="text-danger">{errorMessages.pinNumber}</div>
+                        )}
 
-                        <FormGroup>
+                        <FormGroup className="form-group">
                             <Label for="formName">Name</Label>
                             <Input
                                 id="formName"
@@ -91,13 +94,14 @@ const Register = () => {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
-
+                                className="form-control"
                             />
                         </FormGroup>
-                        {
-                            errorMessages.name && (<div className={"text-danger"}>{errorMessages.name}</div>)
-                        }
-                        <FormGroup>
+                        {errorMessages.name && (
+                            <div className="text-danger">{errorMessages.name}</div>
+                        )}
+
+                        <FormGroup className="form-group">
                             <Label for="formEmail">Email</Label>
                             <Input
                                 id="formEmail"
@@ -106,13 +110,14 @@ const Register = () => {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
+                                className="form-control"
                             />
                         </FormGroup>
-                        {
-                            errorMessages.email && (<div className={"text-danger"}>{errorMessages.email}</div>)
-                        }
+                        {errorMessages.email && (
+                            <div className="text-danger">{errorMessages.email}</div>
+                        )}
 
-                        <FormGroup>
+                        <FormGroup className="form-group">
                             <Label for="formAddress">Address</Label>
                             <Input
                                 id="formAddress"
@@ -121,16 +126,19 @@ const Register = () => {
                                 name="address"
                                 value={formData.address}
                                 onChange={handleChange}
-
+                                className="form-control"
                             />
                         </FormGroup>
-                        {
-                            errorMessages.address && (<div className={"text-danger"}>{errorMessages.address}</div>)
-                        }
+                        {errorMessages.address && (
+                            <div className="text-danger">{errorMessages.address}</div>
+                        )}
 
-                        <Button color="primary" type="submit">
+                        <Button type="submit" className="btn-modern">
                             Register
                         </Button>
+                        <Link to="/login" className="btn-link-modern">
+                            Already have an account?
+                        </Link>
                     </Form>
 
                     {error && <div className="alert alert-danger mt-3">{error}</div>}

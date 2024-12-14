@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {BACKEND_PREFIX} from "../App";
 import {Button, Col, Container, Form, FormGroup, Input, Label, Row} from "reactstrap";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 
 const Login = () => {
@@ -13,6 +13,7 @@ const Login = () => {
 
     const [error, setError] = useState<string>('')
     const [success, setSuccess] = useState<string>('')
+    const navigation = useNavigate();
     const location = useLocation()
     useEffect(() => {
         if (location.search === "?error") {
@@ -50,6 +51,7 @@ const Login = () => {
                     email: "",
                     pinNumber: ""
                 });
+                navigation("/");
             }
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -93,46 +95,45 @@ const Login = () => {
 
     return (
         <Container>
-            <Row className={"justify-content-center"}>
+            <Row className="justify-content-center">
                 <Col md={6}>
+                    <Link to="/" className="btn-top-left">Home</Link>
                     <h2>Login</h2>
-                    <Form onSubmit={handleSubmit}>
-
-                        <FormGroup>
-                            <Label for={"email"}>Email</Label>
+                    <Form onSubmit={handleSubmit} className="modern-form">
+                        <FormGroup className="form-group">
+                            <Label for="email">Email</Label>
                             <Input
-                                id={"email"}
-                                type={"text"}
-                                placeholder={"Enter your email."}
-                                name={"email"}
+                                id="email"
+                                type="text"
+                                placeholder="Enter your email."
+                                name="email"
                                 value={loginData.email}
                                 onChange={handleLoginChange}
+                                className="form-control"
                             />
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for={"pinNumber"}>PIN number</Label>
+                        <FormGroup className="form-group">
+                            <Label for="pinNumber">PIN number</Label>
                             <Input
-                                id={"pinNumber"}
-                                type={"password"}
-                                placeholder={"Enter your PIN."}
-                                name={"pinNumber"}
+                                id="pinNumber"
+                                type="password"
+                                placeholder="Enter your PIN."
+                                name="pinNumber"
                                 value={loginData.pinNumber}
                                 onChange={handleLoginChange}
+                                className="form-control"
                             />
                         </FormGroup>
 
-                        <Button color={"primary"} type={"submit"}>
-                            Log in.
+                        <Button className="btn-modern" type="submit">
+                            Log in
                         </Button>
-
-
                     </Form>
                     {error && <div className="alert alert-danger mt-3">{error}</div>}
                     {success && <div className="alert alert-success mt-3">{success}</div>}
                 </Col>
             </Row>
-
         </Container>
     )
 
