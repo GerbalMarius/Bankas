@@ -10,6 +10,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import CurrentUser from "./components/CurrentUser";
 import BankAccounts from "./components/BankAccounts";
+import BankAccCreationForm from "./components/BankAccCreationForm";
 
 export const BACKEND_PREFIX = "http://localhost:8080"
 
@@ -34,6 +35,7 @@ class App extends React.Component {
                         <Route path={"/login"} element={<Login/>}/>
                         <Route path={"/current"} element={<CurrentUser/>}/>
                         <Route path={"/current/accounts"} element={<BankAccounts/>}/>
+                        <Route path={"/accounts/create"} element={<BankAccCreationForm/>}/>
                     </Routes>
                 </main>
                 </div>

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {BankAccount, fetchCurentUserAccounts} from "../bankapi";
 import {Container, Table} from "reactstrap";
+import {Link} from "react-router-dom";
 
 
 const BankAccounts = () => {
@@ -31,6 +32,7 @@ const BankAccounts = () => {
     }
     return (
         <Container className={"modern-table-container mt-5"}>
+            <Link to={"/current"} className={"btn-top-left"} style={{position:"relative", left:"50px"}}>Back to general page</Link>
             <h1 className={"modern-table-header"}>Your Bank Accounts</h1>
             {accounts.length > 0 ? (
                 <Table className={"modern-table"}>
@@ -52,6 +54,7 @@ const BankAccounts = () => {
                             <td>{account.reservedBalance || "0"}</td>
                             <td>{account.dailyLimit}</td>
                             <td>{account.monthlyLimit}</td>
+                            <td>{account.currencyType}</td>
                         </tr>
                     ))}
                     </tbody>
