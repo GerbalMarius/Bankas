@@ -83,3 +83,96 @@ main {
   padding: 1rem; /* Optional: add padding for better spacing */
 }
 
+/* Modern Table Styles */
+.modern-table-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 25px;
+  background: linear-gradient(145deg, #ffffff, #f3f3f3);
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.modern-table-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.modern-table-header {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modern-table thead {
+  background: linear-gradient(45deg, #6a5ef7, #7366ff);
+  color: #fff;
+  text-align: left;
+}
+
+.modern-table th,
+.modern-table td {
+  padding: 15px;
+  font-size: 14px;
+}
+
+.modern-table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 2px solid #ddd;
+}
+
+.modern-table tbody tr {
+  transition: background 0.3s ease;
+}
+
+.modern-table tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.modern-table tbody tr:hover {
+  background: #f1f1f1;
+}
+
+.modern-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+.modern-table td:last-child {
+  text-align: right;
+}
+
+/* Subtle Focus Effect */
+.modern-table tbody td:focus {
+  outline: none;
+  background: rgba(106, 94, 247, 0.1);
+  transition: background 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modern-table-container {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  .modern-table th,
+  .modern-table td {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+

@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import CurrentUser from "./components/CurrentUser";
+import BankAccounts from "./components/BankAccounts";
 
 export const BACKEND_PREFIX = "http://localhost:8080"
 
@@ -32,6 +33,7 @@ class App extends React.Component {
                         <Route path={"/register"} element={<Register/>}/>
                         <Route path={"/login"} element={<Login/>}/>
                         <Route path={"/current"} element={<CurrentUser/>}/>
+                        <Route path={"/current/accounts"} element={<BankAccounts/>}/>
                     </Routes>
                 </main>
                 </div>
