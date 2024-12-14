@@ -25,11 +25,12 @@ public class UserService {
     }
 
     public User saveUser(UserDTO transferedData) {
-        User user = new User(passwordEncoder.encode(transferedData.getPinNumber()), transferedData.getName(), transferedData.getEmail(),
-                            transferedData.getAddress(), null);
+        User user = new User(passwordEncoder.encode(transferedData.getPinNumber()), transferedData.getName(),
+                transferedData.getEmail(),
+                transferedData.getAddress(), null);
 
         String roleToFind = assignUserRole(transferedData);
-        
+
         Role role = roleRepository.findByName(roleToFind);
         if (role == null) {
             role = assingNewRole(roleToFind);
@@ -45,26 +46,40 @@ public class UserService {
     public User saveAdmin(UserDTO transferedData) {
         User admin = new User(passwordEncoder.encode(transferedData.getPinNumber()), transferedData.getName(), transferedData.getEmail(),
                             transferedData.getAddress(), null);
-    
         Role adminRole = roleRepository.findByName("ADMIN");
         if (adminRole == null) {
             adminRole = assingNewRole("ADMIN");
         }
         admin.setRoles(List.of(adminRole));
-    
+
         return userRepository.save(admin);
     }
 
+    public User saveWorker(UserDTO transferedData) {
+        User worker = new User(passwordEncoder.encode(transferedData.getPinNumber()), transferedData.getName(),
+                transferedData.getEmail(),
+                transferedData.getAddress(), null);
+
+        Role workerRole = roleRepository.findByName("WORKER");
+        if (workerRole == null) {
+            workerRole = assingNewRole("WORKER");
+        }
+        worker.setRoles(List.of(workerRole));
+
+        return userRepository.save(worker);
+    }
+  
     /**
      * Helper method for saving setter changes to database.
+     * 
      * @param user user , whose changes to save.
      */
-    public void update(User user){
+    public void update(User user) {
         userRepository.save(user);
     }
 
     private String assignUserRole(UserDTO userDTO) {
-        return "USER"; //TODO : should add other roles for extended functionality
+        return "USER"; // TODO : should add other roles for extended functionality
     }
 
     private Role assingNewRole(String roleName) {
@@ -108,7 +123,7 @@ public class UserService {
         if (actualUser == null) {
             return Error.USER_NOT_FOUND;
         }
-        if (!pinMatches(formData, actualUser)){
+        if (!pinMatches(formData, actualUser)) {
             return Error.INVALID_PIN;
         }
         return null;

@@ -9,6 +9,9 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import CurrentUser from "./components/CurrentUser";
+import WorkerLogin from './components/WorkerLogin';
+import WorkerRegister from './components/WorkerRegister';
+import WorkerDashboard from './components/WorkerDashboard';
 import AdminLogin from "./components/AdminLogin";
 import AdminViewClients from './components/AdminViewClients';
 import AdminDashboard from './components/AdminDashboard';
@@ -35,6 +38,9 @@ class App extends React.Component {
                         <Route path={"/register"} element={<Register/>}/>
                         <Route path={"/login"} element={<Login/>}/>
                         <Route path={"/current"} element={<CurrentUser/>}/>
+                        <Route path={"/worker-login"} element={<WorkerLogin/>}/>
+                        <Route path={"/worker-register"} element={<WorkerRegister/>}/>
+                        <Route path={"/worker-dashboard"} element={<WorkerDashboard/>}/>
                         <Route path={"/admin-login"} element={<AdminLogin/>}/>
                         <Route path="/admin/viewClients" element={<AdminViewClients/>} />
                         <Route path="/admin-dashboard" element={<AdminDashboard />} />
