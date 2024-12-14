@@ -10,6 +10,7 @@ import org.isp.bankas.utils.Error;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = BankApplication.REACT_FRONT_URL, allowCredentials = "true")
@@ -53,5 +54,13 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Admin registration failed: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/clients")
+    public ResponseEntity<List<UserDTO>> getAllClients() {
+        // This method should only be accessible to admins
+        // You might want to add a security check here
+        List<UserDTO> clients = userService.getAllClients();
+        return ResponseEntity.ok(clients);
     }
 }

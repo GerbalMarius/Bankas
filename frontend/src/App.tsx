@@ -10,6 +10,8 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import CurrentUser from "./components/CurrentUser";
 import AdminLogin from "./components/AdminLogin";
+import AdminViewClients from './components/AdminViewClients';
+import AdminDashboard from './components/AdminDashboard';
 
 export const BACKEND_PREFIX = "http://localhost:8080"
 
@@ -34,6 +36,8 @@ class App extends React.Component {
                         <Route path={"/login"} element={<Login/>}/>
                         <Route path={"/current"} element={<CurrentUser/>}/>
                         <Route path={"/admin-login"} element={<AdminLogin/>}/>
+                        <Route path="/admin/viewClients" element={<AdminViewClients/>} />
+                        <Route path="/admin-dashboard" element={<AdminDashboard />} />
                     </Routes>
                 </main>
                 </div>
