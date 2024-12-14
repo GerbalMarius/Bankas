@@ -6,6 +6,7 @@ import org.isp.bankas.utils.Error;
 import org.isp.bankas.utils.Strings;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -43,10 +44,8 @@ public class UserService {
 
     // Add this method to UserService class
     public User saveAdmin(UserDTO transferedData) {
-        User admin = new User(passwordEncoder.encode(transferedData.getPinNumber()), transferedData.getName(),
-                transferedData.getEmail(),
-                transferedData.getAddress(), null);
-
+        User admin = new User(passwordEncoder.encode(transferedData.getPinNumber()), transferedData.getName(), transferedData.getEmail(),
+                            transferedData.getAddress(), null);
         Role adminRole = roleRepository.findByName("ADMIN");
         if (adminRole == null) {
             adminRole = assingNewRole("ADMIN");
@@ -69,7 +68,7 @@ public class UserService {
 
         return userRepository.save(worker);
     }
-
+  
     /**
      * Helper method for saving setter changes to database.
      * 
@@ -101,6 +100,13 @@ public class UserService {
 
     public User findByEmailOrPinNumber(String email, String pinNumber) {
         return userRepository.findByEmailOrPinNumber(email, pinNumber);
+    }
+    //Gets all clients for admin
+     public List<UserDTO> getAllClients() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                    .map(User::transferToDTO)
+                    .collect(Collectors.toList());
     }
 
     public Error validateLoginCredentials(UserDTO formData) {
