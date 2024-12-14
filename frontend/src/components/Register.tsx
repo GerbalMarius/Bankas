@@ -79,6 +79,7 @@ const Register = () => {
                                 value={formData.pinNumber}
                                 onChange={handleChange}
                                 className="form-control"
+                                maxLength={30}
                             />
                         </FormGroup>
                         {errorMessages.pinNumber && (

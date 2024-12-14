@@ -4,6 +4,7 @@ import {Container, Table} from "reactstrap";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {BACKEND_PREFIX, User} from "../App";
+import {fetchUserRoles} from "../userapi";
 
 
 const BankAccounts = () => {
@@ -11,6 +12,7 @@ const BankAccounts = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [roles, setRoles] = useState<string[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,7 +43,20 @@ const BankAccounts = () => {
                 setError("Failed to load bank accounts");
                 setIsLoading(false);
             }
+            const roles = await fetchUserRoles();
+            console.log(roles);
+            if (roles === null){
+                setUser(null);
+                navigate("/login");
+            }else{
+                setRoles(roles);
+                if (roles.find(role => role === "USER") === undefined){
+                    setUser(null);
+                    navigate("/login");//change to diff login if admin or worker
+                }
+            }
         }
+
         fetchAccounts();
         fetchUser();
     }, [])
