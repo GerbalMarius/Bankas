@@ -1,17 +1,37 @@
 import React, {useEffect, useState} from 'react';
-import {BankAccount, fetchCurentUserAccounts} from "../bankapi";
+import {BankAccount, fetchCurrentBankAccounts} from "../bankapi";
 import {Container, Table} from "reactstrap";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
+import {BACKEND_PREFIX, User} from "../App";
 
 
 const BankAccounts = () => {
     const [accounts, setAccounts] = useState<BankAccount[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+    const navigate = useNavigate();
+
     useEffect(() => {
+        const contr = new AbortController();
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get<User>(
+                    `${BACKEND_PREFIX}/api/user/current`,
+                    {signal: contr.signal}
+                )
+                setUser(response.data)
+            } catch (err) {
+                if (!contr.signal.aborted) {
+                    setUser(null);
+                    navigate("/login");
+                }
+            }
+        }
         const fetchAccounts =  async () =>{
             try {
-                const data = await fetchCurentUserAccounts();
+                const data = await fetchCurrentBankAccounts();
                 if (data !== null){
                     setAccounts(data);
                     setIsLoading(false);
@@ -23,6 +43,7 @@ const BankAccounts = () => {
             }
         }
         fetchAccounts();
+        fetchUser();
     }, [])
     if (isLoading){
         return <div>Loading...</div>

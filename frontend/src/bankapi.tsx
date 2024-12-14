@@ -10,7 +10,7 @@ export interface BankAccount {
     accountName: string;
     currencyType: string;
 }
-export const fetchCurentUserAccounts = async () => {
+export const fetchCurrentBankAccounts = async () => {
     try {
         const response = await axios.get<BankAccount[]>(BACKEND_PREFIX + "/api/accounts/currentUser",
             {withCredentials : true});

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {BACKEND_PREFIX, User} from '../App'
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 
 const CurrentUser = () => {
@@ -55,9 +55,12 @@ const CurrentUser = () => {
     };
     return user ? (
         <div>
-            <h1>Hello {user.name}</h1>
-            <p>Your email is {user.email}</p>
-            <Button className={"btn-normal"} onClick={handleLogout} style={{position:"relative"}}>Atsijungti</Button>
+            <Link to={"/"} className={"btn-top-left"} style={{position:"relative", left:"0px"}}>Back to main page</Link>
+            <Link to={"/current/accounts"} className={"btn-top-left"} style={{position:"relative", left:"50px"}}>View Bank accounts</Link>
+            <Button className={"btn-normal"} onClick={handleLogout} style={{position:"absolute", right:"10px"}}>Logout</Button>
+            <h1 className={"text-center"}>Hello {user.name}!</h1>
+            <h2 className={"text-center"}>Email: {user.email}</h2>
+            <h2 className={"text-center"}>Address: {user.address}</h2>
             {error && <div className="alert alert-danger mt-3">{error}</div>}
         </div>
     ) : null;

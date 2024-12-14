@@ -1,7 +1,6 @@
 package org.isp.bankas.accounts;
 
 import org.isp.bankas.user.User;
-import org.isp.bankas.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
