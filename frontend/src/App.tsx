@@ -53,6 +53,7 @@ class App extends React.Component {
                         <Route path={"/accounts/create"} element={<BankAccCreationForm/>}/>
                         <Route path={"/current/transferInit"} element={<Transfer/>}/>
                         <Route path={"/current/accounts/add"} element={<AddFunds/>}/>
+                        <Route path={"/current/transferHistory"} element={<TransferHistoryPage/>}/>
                     </Routes>
                 </main>
                 </div>
