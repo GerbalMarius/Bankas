@@ -4,9 +4,11 @@ import {BACKEND_PREFIX, User} from "../App";
 import {Link, useNavigate} from "react-router-dom";
 import {Col, Container, Row, Form, FormGroup, Label, Button, Input} from "reactstrap";
 import Select from "react-select";
+import {fetchUserRoles} from "../userapi";
 
 const BankAccCreationForm = () => {
     const [user, setUser] = useState<User | null>(null)
+    const [roles, setRoles] = useState<string[]>([]);
 
     const [formData, setFormData] = useState({
         balance: "",
@@ -38,7 +40,20 @@ const BankAccCreationForm = () => {
                     navigate("/login");
                 }
             }
+            const roles = await fetchUserRoles();
+            console.log(roles);
+            if (roles === null){
+                setUser(null);
+                navigate("/login");
+            }else{
+                setRoles(roles);
+                if (roles.find(role => role === "USER") === undefined){
+                    setUser(null);
+                    navigate("/login");//change to diff login if admin or worker
+                }
+            }
         }
+
         fetchUser();
         return () => contr.abort();
     }, [navigate]);
