@@ -45,7 +45,6 @@ public class TransactionService{
         if (transferredData.getAmount().compareTo(from.getMonthlyLimit()) > 0) {
             throw new IllegalArgumentException("Monthly limit exceeded.");
         }
-
         // Get the exchange rate from the source currency to the target currency
         BigDecimal exchangeRate = Exchanges.getRate(from.getCurrencyType().name(), toTo.getCurrencyType().name());
 

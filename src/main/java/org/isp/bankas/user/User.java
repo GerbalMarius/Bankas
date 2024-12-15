@@ -3,6 +3,7 @@ package org.isp.bankas.user;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.isp.bankas.accounts.BankAccount;
+import org.isp.bankas.loan_request.LoanRequest;
 import org.isp.bankas.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -47,6 +48,9 @@ public final class User implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankAccount> bankAccounts;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LoanRequest> loanRequests;
+
     public User() {
         this("", "", "", "", null);
     }
@@ -59,6 +63,7 @@ public final class User implements UserDetails {
         this.lastLoginDate = lastLoginDate == null ? ZonedDateTime.now(ZoneId.of("Europe/Vilnius")) : lastLoginDate;
         this.roles = new ArrayList<>();
         this.bankAccounts = new ArrayList<>();
+        this.loanRequests = new ArrayList<>();
     }
 
 

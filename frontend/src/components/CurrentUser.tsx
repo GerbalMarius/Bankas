@@ -82,6 +82,9 @@ const CurrentUser = () => {
                 View made transfers
             </Link>
             <Button className={"btn-normal"} onClick={handleLogout} style={{position:"absolute", right:"10px"}}>Logout</Button>
+            <Link to={"/current/loanRequest"} className={"btn-top-left"} style={{position:"relative",fontWeight:"bolder", left:"-92px", top:"600px", padding:"30px", fontSize:"large"}}>
+                Submit  a loan request
+            </Link>
             <h1 className={"text-center"}>Hello {user.name}!</h1>
             <h2 className={"text-center"}>Email: {user.email}</h2>
             <h2 className={"text-center"}>Address: {user.address}</h2>
