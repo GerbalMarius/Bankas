@@ -54,7 +54,7 @@ const Login = () => {
                     email: "",
                     pinNumber: ""
                 });
-                navigation("/");
+                navigation("/current");
             }
         } catch (err) {
             if (axios.isAxiosError(err)) {

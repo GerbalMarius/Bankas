@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {fetchTransferHistory, TransferHistory, Transaction, BankAccount} from '../bankapi';
 import {BACKEND_PREFIX, User} from "../App";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {fetchUserRoles} from "../userapi"; // Import the CSS file for table styling
 
@@ -78,6 +78,7 @@ const TransferHistoryPage = () => {
 
     return (
         <div className="transfer-history">
+            <Link to="/current" className="btn-top-left" style={{position:"absolute", left :"55px", top:"95px"}}>To general page</Link>
             <h1>Made transactions</h1>
             {transferHistories.map((history, id)  => (
                 <div key={id} className="account-transfer-history">
