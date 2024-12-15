@@ -15,6 +15,10 @@ import WorkerDashboard from './components/WorkerDashboard';
 import AdminLogin from "./components/AdminLogin";
 import AdminViewClients from './components/AdminViewClients';
 import AdminDashboard from './components/AdminDashboard';
+import BankAccounts from "./components/BankAccounts";
+import BankAccCreationForm from "./components/BankAccCreationForm";
+import Transfer from "./components/Transfer";
+import AddFunds from "./components/AddFunds";
 
 export const BACKEND_PREFIX = "http://localhost:8080"
 
@@ -44,6 +48,10 @@ class App extends React.Component {
                         <Route path={"/admin-login"} element={<AdminLogin/>}/>
                         <Route path="/admin/viewClients" element={<AdminViewClients/>} />
                         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                        <Route path={"/current/accounts"} element={<BankAccounts/>}/>
+                        <Route path={"/accounts/create"} element={<BankAccCreationForm/>}/>
+                        <Route path={"/current/transferInit"} element={<Transfer/>}/>
+                        <Route path={"/current/accounts/add"} element={<AddFunds/>}/>
                     </Routes>
                 </main>
                 </div>
