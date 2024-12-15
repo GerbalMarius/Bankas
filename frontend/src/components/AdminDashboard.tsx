@@ -18,11 +18,6 @@ const adminFeatures: AdminFeature[] = [
         name: "Transaction Statistics",
         description: "View detailed transaction analytics",
         path: "/admin/statistics"
-    },
-    {
-        name: "System Statistics",
-        description: "Monitor server performance and resources",
-        path: "/admin/systemStats"
     }
 ];
 

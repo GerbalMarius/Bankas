@@ -22,7 +22,6 @@ import Transfer from "./components/Transfer";
 import AddFunds from "./components/AddFunds";
 import TransferHistoryPage from "./components/TransferHistoryPage";
 import LoanRequest from "./components/LoanRequest";
-import AdminSystemStats from "./components/AdminSystemStats";
 
 export const BACKEND_PREFIX = "http://localhost:8080"
 
@@ -53,7 +52,6 @@ class App extends React.Component {
                         <Route path="/admin/viewClients" element={<AdminViewClients/>} />
                         <Route path="/admin-dashboard" element={<AdminDashboard />} />
                         <Route path="/admin/statistics" element={<AdminTransactionStats />} />
-                        <Route path="/admin/systemStats" element={<AdminSystemStats />} />
                         <Route path={"/current/accounts"} element={<BankAccounts/>}/>
                         <Route path={"/accounts/create"} element={<BankAccCreationForm/>}/>
                         <Route path={"/current/transferInit"} element={<Transfer/>}/>
