@@ -12,6 +12,7 @@ import CurrentUser from "./components/CurrentUser";
 import WorkerLogin from './components/WorkerLogin';
 import WorkerRegister from './components/WorkerRegister';
 import WorkerDashboard from './components/WorkerDashboard';
+import AdminTransactionStats from './components/AdminTransactionStats';
 import AdminLogin from "./components/AdminLogin";
 import AdminViewClients from './components/AdminViewClients';
 import AdminDashboard from './components/AdminDashboard';
@@ -49,6 +50,7 @@ class App extends React.Component {
                         <Route path={"/admin-login"} element={<AdminLogin/>}/>
                         <Route path="/admin/viewClients" element={<AdminViewClients/>} />
                         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                        <Route path="/admin/statistics" element={<AdminTransactionStats />} />
                         <Route path={"/current/accounts"} element={<BankAccounts/>}/>
                         <Route path={"/accounts/create"} element={<BankAccCreationForm/>}/>
                         <Route path={"/current/transferInit"} element={<Transfer/>}/>

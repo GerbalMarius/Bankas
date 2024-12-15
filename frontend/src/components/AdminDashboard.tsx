@@ -15,29 +15,9 @@ const adminFeatures: AdminFeature[] = [
         path: "/admin/viewClients"
     },
     {
-        name: "Manage Accounts",
-        description: "Create, edit, and close bank accounts",
-        path: "/admin/manageAccounts"
-    },
-    {
-        name: "Transaction History",
-        description: "View and audit all transactions",
-        path: "/admin/transactions"
-    },
-    {
-        name: "User Analytics",
-        description: "View user activity and statistics",
-        path: "/admin/analytics"
-    },
-    {
-        name: "System Settings",
-        description: "Configure system-wide settings",
-        path: "/admin/settings"
-    },
-    {
-        name: "Admin Management",
-        description: "Manage admin users and permissions",
-        path: "/admin/manage-admins"
+        name: "Transaction Statistics",
+        description: "View detailed transaction analytics",
+        path: "/admin/statistics"
     }
 ];
 
