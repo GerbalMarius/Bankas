@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.isp.bankas.transactions.Transaction;
 import org.isp.bankas.user.User;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -38,6 +41,9 @@ public class BankAccount {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "from", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions;
+
     public BankAccount() {
         this(BigDecimal.ZERO, null, BigDecimal.ZERO, BigDecimal.ZERO, "", CurrencyType.EUR);
     }
@@ -48,5 +54,6 @@ public class BankAccount {
         this.monthlyLimit = monthlyLimit;
         this.accountName = accountName;
         this.currencyType = currencyType;
+        this.transactions = new ArrayList<>();
     }
 }

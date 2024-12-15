@@ -60,7 +60,6 @@ public class AuthController {
         actualUser.setLastLoginDate(ZonedDateTime.now(ZoneId.of("Europe/Vilnius")));
         userService.update(actualUser);
         session.setAttribute("user", actualUser.transferToDTO());
-        session.setAttribute("roles", actualUser.getRoles());
         return ResponseEntity.ok("Login successful");
     }
 

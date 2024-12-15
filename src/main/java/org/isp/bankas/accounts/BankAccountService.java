@@ -1,8 +1,9 @@
 package org.isp.bankas.accounts;
 
 import org.isp.bankas.user.User;
-import org.isp.bankas.user.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BankAccountService {
@@ -22,5 +23,17 @@ public class BankAccountService {
         user.getBankAccounts().add(bankAccount);
 
         return bankAccountRepository.save(bankAccount);
+    }
+    public BankAccount update(BankAccount account){
+        return bankAccountRepository.save(account);
+    }
+    public BankAccount findById(long accountId){
+        return bankAccountRepository.findById(accountId);
+    }
+    public BankAccount findByAccountName(String accountName){
+        return bankAccountRepository.findByAccountName(accountName);
+    }
+    public List<BankAccount> findByUser(User user){
+        return bankAccountRepository.findByUser(user);
     }
 }

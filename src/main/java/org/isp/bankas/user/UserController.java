@@ -2,12 +2,15 @@ package org.isp.bankas.user;
 
 import jakarta.servlet.http.HttpSession;
 import org.isp.bankas.BankApplication;
+import org.isp.bankas.role.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = BankApplication.REACT_FRONT_URL, allowCredentials = "true")
@@ -23,6 +26,16 @@ public class UserController {
         Object user = session.getAttribute("user");
         if (user instanceof UserDTO currentUser){
             return ResponseEntity.ok(currentUser);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+    @GetMapping("/currentRoles")
+    public ResponseEntity<List<String>> getCurrentUserRoles(HttpSession session){
+        Object user = session.getAttribute("user");
+        if (user instanceof UserDTO currentUser){
+            User actual = userService.findByEmail(currentUser.getEmail());
+            List<String> names = actual.getRoles().stream().map(Role::getName).toList();
+            return ResponseEntity.ok(names);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

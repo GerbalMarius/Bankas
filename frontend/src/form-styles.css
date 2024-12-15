@@ -94,3 +94,70 @@ form input:focus,
 form button:hover {
     transition: 0.2s ease-out;
 }
+
+/* Modern select container styles */
+.modern-select .react-select__control {
+    border-radius: 0.25rem; /* Same as Bootstrap input fields */
+    border: 1px solid #ced4da; /* Light gray border to match form elements */
+    height: calc(1.5em + 0.75rem + 2px); /* Matches form-control height */
+    font-size: 1rem; /* Standard font size for form inputs (Bootstrap default) */
+    background-color: #fff; /* Ensure dropdown background matches inputs */
+    box-shadow: none; /* Remove default shadows for a cleaner look */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Nice hover/focus effect */
+}
+
+.modern-select .react-select__control:hover {
+    border-color: #80bdff; /* Light blue hover effect (Bootstrap standard) */
+    box-shadow: none; /* No box shadow on hover */
+}
+
+.modern-select .react-select__control--is-focused {
+    border-color: #80bdff; /* Highlighted with a hover-like color on focus */
+    outline: 0; /* Remove any inconsistent outline */
+    box-shadow: none; /* No weird focus shadows from defaults */
+}
+
+.modern-select .react-select__value-container {
+    padding: 0.375rem 0.75rem; /* Match form-control padding */
+}
+
+.modern-select .react-select__placeholder {
+    color: #6c757d; /* Match Bootstrap's placeholder color */
+}
+
+/* Dropdown Menu Styles */
+.modern-select .react-select__menu {
+    z-index: 1050; /* Prevent overlay conflicts */
+    border-radius: 0.25rem; /* Match input styling */
+    border: 1px solid #ced4da; /* Border for dropdown menu */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+}
+
+.modern-select .react-select__menu-list {
+    max-height: 250px; /* Limit dropdown height */
+    overflow-y: auto; /* Add scrollbar for long lists */
+}
+
+/* Option styles */
+.modern-select .react-select__option {
+    padding: 0.5rem 0.75rem; /* Comfortable padding for options */
+    font-size: 1rem; /* Match form-control text size */
+    color: #495057; /* Neutral text color */
+    cursor: pointer; /* Show pointer for interactive options */
+}
+
+.modern-select .react-select__option--is-focused {
+    background-color: #f8f9fa; /* Light gray on hover */
+    color: #212529; /* Ensure contrast for focus */
+}
+
+.modern-select .react-select__option--is-selected {
+    background-color: #80bdff; /* Light blue for selected */
+    color: #fff; /* White text for selected */
+}
+
+/* Disabled state */
+.modern-select .react-select__control--is-disabled {
+    background-color: #e9ecef; /* Slightly darker gray for disabled inputs */
+    cursor: not-allowed;
+}
