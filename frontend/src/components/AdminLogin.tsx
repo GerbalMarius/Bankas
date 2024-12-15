@@ -59,7 +59,7 @@ const AdminLogin = () => {
         <Container>
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <Link to="/" className="btn-top-left">Home</Link>
+                    <Link to="/" className="btn-top-left-admin">Home</Link>
                     <h2>Admin Login</h2>
                     <Form onSubmit={handleSubmit} className="admin-login-form">
                         <FormGroup className="form-group">

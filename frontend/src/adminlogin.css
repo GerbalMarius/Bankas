@@ -67,7 +67,7 @@
     transform: translateY(-2px);
 }
 
-.btn-top-left {
+.btn-top-left-admin {
     position: absolute;
     top: 20px;
     left: 20px;
@@ -78,7 +78,7 @@
     border-radius: 10px;
 }
 
-.btn-top-left:hover {
+.btn-top-left-admin:hover {
     background: linear-gradient(45deg, #2980b9, #3498db);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);

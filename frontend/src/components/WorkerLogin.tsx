@@ -104,7 +104,7 @@ const WorkerLogin = () => {
     <Container>
       <Row className="justify-content-center">
         <Col md={6}>
-          <Link to="/" className="btn-top-left">
+          <Link to="/" className="btn-top-left-admin">
             Home
           </Link>
           <h2>Worker Login</h2>
