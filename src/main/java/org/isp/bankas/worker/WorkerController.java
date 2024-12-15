@@ -210,13 +210,16 @@ public class WorkerController {
 
         switch (preference) {
             case "workEveryOtherDay":
+                int shiftLength = 8; // Starting shift length
                 for (int i = 0; i < workDays.size(); i += 2) {
                     if (totalHours >= 40)
                         break;
                     if (freeDaySet.contains(workDays.get(i)))
                         continue;
 
-                    totalHours = addShifts(newGraphic, workDays.get(i), totalHours, 8);
+                    // Increment shift length by 2 hours each iteration, capped at 12
+                    totalHours = addShifts(newGraphic, workDays.get(i), totalHours, shiftLength);
+                    shiftLength = Math.min(shiftLength + 2, 12); // Ensure maximum shift length is 12
                 }
                 break;
 
@@ -232,14 +235,25 @@ public class WorkerController {
                 break;
 
             case "longShifts":
-                for (DayOfWeek day : workDays) {
+                List<DayOfWeek> allDays = List.of(
+                        DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY,
+                        DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
+
+                for (DayOfWeek day : allDays) {
+                    // Stop if 40 hours have been scheduled
                     if (totalHours >= 40)
                         break;
+
+                    // Skip free days
                     if (freeDaySet.contains(day))
                         continue;
 
-                    int hours = Math.min(10, 40 - totalHours);
-                    totalHours = addShifts(newGraphic, day, totalHours, hours);
+                    // Calculate remaining hours to reach 40, ensuring max 10-hour shifts
+                    int hoursToAdd = Math.min(10, 40 - totalHours);
+
+                    // Add the shift and update total hours
+                    totalHours = addShifts(newGraphic, day, totalHours, hoursToAdd);
                 }
                 break;
 
