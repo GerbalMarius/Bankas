@@ -102,9 +102,11 @@ const Transfer = () => {
         }catch (err){
             if (err instanceof AxiosError) {
                 if (err.response?.status === 400) {
-                    setErrorMessages(err.response.data);
-                } else {
-                    setError("Could not commit transaction.");
+                    if (err.response.data !== `Target account not found: ${formData.accountNumberTo}`) {
+                        setErrorMessages(err.response.data);
+                    } else if (err.response.data === `Target account not found: ${formData.accountNumberTo}`) {
+                        setError(`Target account not found: ${formData.accountNumberTo}`)
+                    }
                 }
             } else {
                 setError("An unexpected error occurred.");
