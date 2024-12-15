@@ -4,6 +4,7 @@ import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 import {fetchUserRoles} from "../userapi";
+import TransferHistoryPage from "./TransferHistoryPage";
 
 const CurrentUser = () => {
     const [user, setUser] = useState<User | null>(null)
@@ -72,17 +73,21 @@ const CurrentUser = () => {
         <div>
             <Link to={"/"} className={"btn-top-left"} style={{position:"relative", left:"0px"}}>Back to main page</Link>
             <Link to={"/current/accounts"} className={"btn-top-left"} style={{position:"relative", left:"50px"}}>View Bank accounts</Link>
+            <Link to={"/current/accounts/add"} className={"btn-top-left"} style={{position:"relative", left:"60px"}}>Add funds</Link>
             <Link to={"/current/transferInit"} className={"btn-top-left"}
-                  style={{position:"relative",fontWeight:"bolder", left:"500px", top:"220px", padding:"30px", fontSize:"large"}}>
+                  style={{position:"relative",fontWeight:"bolder", left:"360px", top:"220px", padding:"30px", fontSize:"large"}}>
                 Transfer money
             </Link>
-            <Link to={"/current/accounts/add"} className={"btn-top-left"} style={{position:"relative", left:"50px"}}>Add funds</Link>
+            <Link to={"/current/transferHistory"} className={"btn-top-left"} style={{position:"relative",fontWeight:"bolder", left:"150px", top:"420px", padding:"30px", fontSize:"large"}}>
+                View made transfers
+            </Link>
             <Button className={"btn-normal"} onClick={handleLogout} style={{position:"absolute", right:"10px"}}>Logout</Button>
             <h1 className={"text-center"}>Hello {user.name}!</h1>
             <h2 className={"text-center"}>Email: {user.email}</h2>
             <h2 className={"text-center"}>Address: {user.address}</h2>
             {error && <div className="alert alert-danger mt-3">{error}</div>}
         </div>
+
     ) : null;
 }
 export default CurrentUser;
