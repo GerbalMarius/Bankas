@@ -239,31 +239,56 @@ const WorkerDashboard: React.FC = () => {
       {alert && <Alert color={alert.type}>{alert.message}</Alert>}
 
       <Nav tabs className="mb-3">
-        <NavItem>
-          <NavLink
-            active={activeTab === "workGraphic"}
-            onClick={() => setActiveTab("workGraphic")}
-          >
-            Work Graphic
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            active={activeTab === "freeDays"}
-            onClick={() => setActiveTab("freeDays")}
-          >
-            Free Days
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            active={activeTab === "generateGraph"}
-            onClick={() => setActiveTab("generateGraph")}
-          >
-            Generate Work Graphic
-          </NavLink>
-        </NavItem>
-      </Nav>
+  <NavItem>
+    <NavLink
+      active={activeTab === "workGraphic"}
+      onClick={() => setActiveTab("workGraphic")}
+    >
+      Work Graphic
+    </NavLink>
+  </NavItem>
+  <NavItem>
+    <NavLink
+      active={activeTab === "freeDays"}
+      onClick={() => setActiveTab("freeDays")}
+    >
+      Free Days
+    </NavLink>
+  </NavItem>
+  <NavItem>
+    <NavLink
+      active={activeTab === "generateGraph"}
+      onClick={() => setActiveTab("generateGraph")}
+    >
+      Generate Work Graphic
+    </NavLink>
+  </NavItem>
+  <NavItem>
+    <NavLink
+      active={activeTab === "invalidreasons"}
+      onClick={() => setActiveTab("invalidreasons")}
+    >
+      Invalid reasons for transactions
+    </NavLink>
+  </NavItem>
+  <NavItem>
+    <NavLink
+      active={activeTab === "usertransactions"}
+      onClick={() => setActiveTab("usertransactions")}
+    >
+      User transactions
+    </NavLink>
+  </NavItem>
+  <NavItem>
+    <NavLink
+      active={activeTab === "limitusertransactions"}
+      onClick={() => setActiveTab("limitusertransactions")}
+    >
+      User's transactions limits
+    </NavLink>
+  </NavItem>
+</Nav>
+
 
       <FormGroup>
         <Label for="weekPicker">Select Week</Label>
