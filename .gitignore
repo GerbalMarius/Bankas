@@ -282,3 +282,4 @@ deployment_keys.tar
 
 .github/.release
 release-artifacts-*
+chat.py

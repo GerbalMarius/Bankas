@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.isp.bankas.accounts.BankAccount;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -29,6 +30,9 @@ public class Transaction {
     @Column(name = "amount", nullable = false, precision = 10, scale = 3)
     private BigDecimal amount;
 
+    @Column(name = "date")
+    private LocalDate date;
+
     public Transaction() {
         this("", null, "", BigDecimal.ZERO);
     }
@@ -37,5 +41,6 @@ public class Transaction {
         this.from = from;
         this.accountNumberTo = accountNumberTo;
         this.amount = amount;
+        this.date = LocalDate.now();
     }
 }
