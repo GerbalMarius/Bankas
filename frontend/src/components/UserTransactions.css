@@ -1,0 +1,41 @@
+/* src/components/UserTransactions.css */
+
+.user-transactions {
+    padding: 20px;
+  }
+  
+  .user-transactions select {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .user-transactions table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .user-transactions th,
+  .user-transactions td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .user-transactions th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .user-transactions button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .user-transactions button:hover {
+    background-color: #d32f2f;
+  }

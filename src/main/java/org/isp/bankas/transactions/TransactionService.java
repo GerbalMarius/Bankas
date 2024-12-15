@@ -3,24 +3,29 @@ package org.isp.bankas.transactions;
 import org.isp.bankas.accounts.BankAccount;
 import org.isp.bankas.accounts.BankAccountRepository;
 import org.isp.bankas.fixer.Exchanges;
+import org.isp.bankas.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class TransactionService{
+public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final BankAccountRepository bankAccountRepository;
-    public TransactionService(TransactionRepository transactionRepository, BankAccountRepository bankAccountRepository) {
+
+    public TransactionService(TransactionRepository transactionRepository,
+                              BankAccountRepository bankAccountRepository) {
         this.transactionRepository = transactionRepository;
         this.bankAccountRepository = bankAccountRepository;
     }
 
     @Transactional
-    public Transaction saveMadeTransaction(TransactionDTO transferredData, BankAccount from){
+    public Transaction saveMadeTransaction(TransactionDTO transferredData, BankAccount from) {
         Transaction transaction = new Transaction();
         BankAccount saved = calculateDifference(transferredData, from);
         transaction.setAmount(transferredData.getAmount());
@@ -28,11 +33,10 @@ public class TransactionService{
         transaction.setAccountNumberTo(transferredData.getAccountNumberTo());
         transaction.setFrom(saved);
 
-
         return transactionRepository.save(transaction);
     }
 
-    private  BankAccount calculateDifference(TransactionDTO transferredData, BankAccount from) {
+     private BankAccount calculateDifference(TransactionDTO transferredData, BankAccount from) {
         // Find the target bank account to transfer money to
         BankAccount toTo = bankAccountRepository.findByAccountName(transferredData.getAccountNumberTo());
 
@@ -72,5 +76,37 @@ public class TransactionService{
 
 
         return from;
+    }
+    public List<Transaction> getUserTransactions(User user) {
+        List<Transaction> userTransactions = new ArrayList<>();
+        List<BankAccount> accounts = user.getBankAccounts();
+        for (BankAccount account : accounts) {
+            // Assuming we want to fetch transactions where this account was the "from" account
+            userTransactions.addAll(transactionRepository.findByFrom(account));
+        }
+        return userTransactions;
+    }
+
+    @Transactional
+    public void cancelTransaction(Long transactionId) {
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+
+        BankAccount fromAccount = transaction.getFrom();
+        BankAccount toAccount = bankAccountRepository.findByAccountName(transaction.getAccountNumberTo());
+
+        if (fromAccount == null || toAccount == null) {
+            throw new RuntimeException("Invalid transaction: accounts not found");
+        }
+
+        // Reverse the transaction
+        fromAccount.setBalance(fromAccount.getBalance().add(transaction.getAmount()));
+        toAccount.setBalance(toAccount.getBalance().subtract(transaction.getAmount()));
+
+        bankAccountRepository.save(fromAccount);
+        bankAccountRepository.save(toAccount);
+
+        // Delete the transaction
+        transactionRepository.delete(transaction);
     }
 }

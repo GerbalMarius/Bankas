@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.isp.bankas.BankApplication;
 import org.isp.bankas.role.RoleRepository;
+import org.isp.bankas.transactions.Transaction;
+import org.isp.bankas.transactions.TransactionService;
 import org.isp.bankas.user.User;
 import org.isp.bankas.user.UserDTO;
 import org.isp.bankas.user.UserService;
@@ -24,17 +26,17 @@ import java.util.*;
 public class WorkerController {
     private final UserService userService;
     private final RoleRepository roleRepository;
-
     private final WorkGraphicRepository workGraphicRepository;
     private final FreeDayRequestRepository freeDayRequestRepository;
+    private final TransactionService transactionService;
 
-    public WorkerController(UserService userService, RoleRepository roleRepository,
-            WorkGraphicRepository workGraphicRepository, FreeDayRequestRepository freeDayRequestRepository) {
+    public WorkerController(UserService userService, RoleRepository roleRepository, WorkGraphicRepository workGraphicRepository, FreeDayRequestRepository freeDayRequestRepository, TransactionService transactionService) {
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.workGraphicRepository = workGraphicRepository;
         this.freeDayRequestRepository = freeDayRequestRepository;
-    }
+        this.transactionService = transactionService;
+}
 
     @PostMapping("/register")
     public ResponseEntity<String> registerNewUser(@Valid @RequestBody UserDTO transferredData) {
@@ -290,6 +292,33 @@ public class WorkerController {
         return currentHours + hoursToAdd;
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllClients();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/transactions/{userEmail}")
+    public ResponseEntity<List<Transaction>> getUserTransactions(@PathVariable String userEmail) {
+        User user = userService.findByEmail(userEmail);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Transaction> transactions = transactionService.getUserTransactions(user);
+        return ResponseEntity.ok(transactions);
+    }
+
+    @PostMapping("/cancel-transaction/{transactionId}")
+    public ResponseEntity<String> cancelTransaction(@PathVariable Long transactionId) {
+        try {
+            transactionService.cancelTransaction(transactionId);
+            return ResponseEntity.ok("Transaction cancelled successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    // Exception handler
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleAuthenticationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -300,5 +329,4 @@ public class WorkerController {
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
-
 }

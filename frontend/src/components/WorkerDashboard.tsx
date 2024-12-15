@@ -29,6 +29,18 @@ interface WorkGraphic {
   shifts: Shift[];
 }
 
+interface User {
+  email: string;
+  name: string;
+}
+
+interface Transaction {
+  id: number;
+  description: string;
+  amount: string;
+  date: string;
+}
+
 const getWeekNumber = (date: Date): { year: number; week: number } => {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
   const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
@@ -51,6 +63,10 @@ const WorkerDashboard: React.FC = () => {
   );
   const [preference, setPreference] = useState("");
   const [freeDay, setFreeDay] = useState("");
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<string>("");
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   // Fetch the work graphic when the week changes
   useEffect(() => {
@@ -232,6 +248,61 @@ const WorkerDashboard: React.FC = () => {
       shifts: workGraphic.shifts.filter((shift) => shift.day === day),
     }));
   };
+  useEffect(() => {
+    if (activeTab === "userTransactions") {
+      fetchUsers();
+    }
+  }, [activeTab]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_PREFIX}/api/worker/users`, {
+        withCredentials: true,
+      });
+      setUsers(response.data);
+    } catch (error) {
+      setAlert({ type: "danger", message: "Error fetching users." });
+    }
+  };
+
+  const fetchTransactions = async (userEmail: string) => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_PREFIX}/api/worker/transactions/${userEmail}`,
+        { withCredentials: true }
+      );
+      setTransactions(response.data);
+    } catch (error) {
+      setAlert({ type: "danger", message: "Error fetching transactions." });
+    }
+  };
+
+  const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSelectedUser(value);
+    if (value) {
+      fetchTransactions(value);
+    } else {
+      setTransactions([]);
+    }
+  };
+
+  const handleCancelTransaction = async (transactionId: number) => {
+    try {
+      await axios.post(
+        `${BACKEND_PREFIX}/api/worker/cancel-transaction/${transactionId}`,
+        {},
+        { withCredentials: true }
+      );
+      setAlert({
+        type: "success",
+        message: "Transaction cancelled successfully.",
+      });
+      fetchTransactions(selectedUser);
+    } catch (error) {
+      setAlert({ type: "danger", message: "Error cancelling transaction." });
+    }
+  };
 
   return (
     <div className="container mt-4">
@@ -261,6 +332,14 @@ const WorkerDashboard: React.FC = () => {
             onClick={() => setActiveTab("generateGraph")}
           >
             Generate Work Graphic
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            active={activeTab === "userTransactions"}
+            onClick={() => setActiveTab("userTransactions")}
+          >
+            User Transactions
           </NavLink>
         </NavItem>
       </Nav>
@@ -421,6 +500,57 @@ const WorkerDashboard: React.FC = () => {
               {loading ? <Spinner size="sm" /> : "Generate"}
             </Button>
           </Form>
+        </div>
+      )}
+{activeTab === "userTransactions" && (
+        <div>
+          <h2>User Transactions</h2>
+          <FormGroup>
+            <Label for="userSelect">Select User</Label>
+            <Input
+              type="select"
+              id="userSelect"
+              value={selectedUser}
+              onChange={handleUserChange}
+            >
+              <option value="">-- Select User --</option>
+              {users.map((user) => (
+                <option key={user.email} value={user.email}>
+                  {user.name}
+                </option>
+              ))}
+            </Input>
+          </FormGroup>
+          {selectedUser && (
+            <Table striped>
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map((transaction) => (
+                  <tr key={transaction.id}>
+                    <td>{transaction.description}</td>
+                    <td>{transaction.amount}</td>
+                    <td>{transaction.date}</td>
+                    <td>
+                      <Button
+                        color="danger"
+                        size="sm"
+                        onClick={() => handleCancelTransaction(transaction.id)}
+                      >
+                        Cancel Transaction
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
         </div>
       )}
     </div>
