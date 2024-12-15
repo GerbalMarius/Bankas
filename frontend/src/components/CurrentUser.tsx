@@ -4,6 +4,7 @@ import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {Button} from "reactstrap";
 import {fetchUserRoles} from "../userapi";
+import TransferHistoryPage from "./TransferHistoryPage";
 
 const CurrentUser = () => {
     const [user, setUser] = useState<User | null>(null)
@@ -82,7 +83,11 @@ const CurrentUser = () => {
             <h2 className={"text-center"}>Email: {user.email}</h2>
             <h2 className={"text-center"}>Address: {user.address}</h2>
             {error && <div className="alert alert-danger mt-3">{error}</div>}
+            <div style={{position:"relative", marginTop:"200px"}}>
+                <TransferHistoryPage/>
+            </div>
         </div>
+
     ) : null;
 }
 export default CurrentUser;

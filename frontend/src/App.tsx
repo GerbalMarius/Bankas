@@ -19,6 +19,7 @@ import BankAccounts from "./components/BankAccounts";
 import BankAccCreationForm from "./components/BankAccCreationForm";
 import Transfer from "./components/Transfer";
 import AddFunds from "./components/AddFunds";
+import TransferHistoryPage from "./components/TransferHistoryPage";
 
 export const BACKEND_PREFIX = "http://localhost:8080"
 

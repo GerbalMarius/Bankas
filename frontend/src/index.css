@@ -176,3 +176,17 @@ main {
   }
 }
 
+.transfer-history {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.account-transfer-history {
+  margin-bottom: 30px;
+}
+
+.account-transfer-history h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
