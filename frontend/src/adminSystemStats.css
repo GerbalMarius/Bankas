@@ -1,0 +1,57 @@
+.system-stats-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.system-stats-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.stat-card {
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.stat-card .card-text {
+    font-size: 1rem;
+    color: #34495e;
+}
+
+.stat-card .card-text div {
+    margin-bottom: 0.5rem;
+}
+
+.memory {
+    background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+}
+
+.system {
+    background: linear-gradient(135deg, #ffd3b6 0%, #ffaaa5 100%);
+}
+
+.performance {
+    background: linear-gradient(135deg, #b8c1ec 0%, #9ba4df 100%);
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+}
