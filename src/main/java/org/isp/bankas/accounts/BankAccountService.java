@@ -4,6 +4,7 @@ import org.isp.bankas.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 @Service
 public class BankAccountService {
@@ -35,5 +36,12 @@ public class BankAccountService {
     }
     public List<BankAccount> findByUser(User user){
         return bankAccountRepository.findByUser(user);
+    }
+    public void updateBankAccountFunds(String bankAccountNumber, int amount) {
+        BankAccount account = bankAccountRepository.findByAccountName(bankAccountNumber);
+        if (account != null) {
+            account.setBalance(account.getBalance().add(BigDecimal.valueOf(amount)));
+            bankAccountRepository.save(account);
+        }
     }
 }
