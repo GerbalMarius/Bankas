@@ -9,23 +9,20 @@ import {fetchUserRoles} from "../userapi";
 import Select from "react-select";
 
 
-const Transfer = () => {
+const AddFunds = () => {
     const [accounts, setAccounts] = useState<BankAccount[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const [errorMessages, setErrorMessages] = useState<any>([]);
+    const [errors, setErrors] = useState<any>([]);
     const [success, setSuccess] = useState<string>('');
     const [user, setUser] = useState<User | null>(null);
     const [roles, setRoles] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        description: "",
-        bankAccountFrom : "",
-        accountNumberTo : "",
+        bankAccountNumber : "",
         amount : ""
     })
-
     useEffect(() => {
         const contr = new AbortController();
         const fetchUser = async () => {
@@ -61,6 +58,7 @@ const Transfer = () => {
                 navigate("/login");
             }else{
                 setRoles(roles);
+                setIsLoading(false);
                 if (roles.find(role => role === "USER") === undefined){
                     setUser(null);
                     navigate("/login");//change to diff login if admin or worker
@@ -80,37 +78,45 @@ const Transfer = () => {
         });
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        e.preventDefault()
         try {
             const response = await axios.post(
-                `${BACKEND_PREFIX}/api/transactions/commit`,
+                `${BACKEND_PREFIX}/api/accounts/currentUser/update`,
                 formData,
-                {withCredentials:true}
+                {withCredentials : true}
             )
-            if (response.status === 201){
-                setSuccess("Transaction committed successfully!");
+            if (response.status === 200){
+                setSuccess("Funds added successfully!");
                 setError("");
                 setFormData({
-                    description: "",
-                    bankAccountFrom : "",
-                    accountNumberTo : "",
+                    bankAccountNumber : "",
                     amount : ""
                 })
+            }
+            else if (response.status === 401){
+                setError("You are not authorized to perform this action");
+                setSuccess("");
             }else{
-                setError("Failed to commit transaction");
             }
         }catch (err){
             if (err instanceof AxiosError) {
-                if (err.response?.status === 400) {
-                    setErrorMessages(err.response.data);
-                } else {
-                    setError("Could not commit transaction.");
+                if (err.response?.status === 400 || err.response?.status === 401) {
+                    // Handle error message from backend
+                    if (err.response.data === "Couldn't find the registered bank account.") {
+                        setError("Couldn't find the registered bank account.");
+                    } else {
+                        // If other backend errors (like validation errors)
+                        setErrors(err.response.data);
+                    }
                 }
-            } else {
-                setError("An unexpected error occurred.");
             }
+            else{
+                setError("Failed to add funds due to an unexpected error");
+            }
+
         }
     }
+
     if (isLoading){
         return <div>Loading...</div>
     }
@@ -119,26 +125,18 @@ const Transfer = () => {
             <Row className="justify-content-center">
                 <Col md={6}>
                     <Link to={"/current"} className={"btn-top-left"}>Back to general page</Link>
-                    <h2>Transfer money</h2>
+                    <h2>Add funds to your account</h2>
                     <Form className={"modern-form"} onSubmit={handleSubmit}>
-                        <FormGroup>
-                            <Label for="description">Description</Label>
-                            <Input type="text" name="description" id="description" value={formData.description} onChange={handleChange}/>
-                        </FormGroup>
-                        {errorMessages.description && (
-                            <div className={"text-danger"}>{errorMessages.description}</div>
-                        )}
-
                         <FormGroup className="form-group">
-                            <Label for="banckAccountFrom">Select account</Label>
+                            <Label for="accountNumberTo">Select account</Label>
                             <Select
-                                id="bankAccountFrom"
-                                name="bankAccountFrom"
-                                value={{ value: formData.bankAccountFrom, label: formData.bankAccountFrom }}
+                                id="accountNumberTo"
+                                name="accountNumberTo"
+                                value={{ value: formData.bankAccountNumber, label: formData.bankAccountNumber }}
                                 onChange={(selectedOption) =>
                                     setFormData({
                                         ...formData,
-                                        bankAccountFrom: selectedOption?.value || "",
+                                        bankAccountNumber: selectedOption?.value || "",
                                     })
                                 }
                                 options={accounts.map((option) => ({
@@ -165,39 +163,26 @@ const Transfer = () => {
                                     }),
                                 }}
                             />
-                            {errorMessages.bankAccountFrom && (
-                                <div className={"text-danger"}>{errorMessages.bankAccountFrom}</div>
-                            )}
                         </FormGroup>
-                        <FormGroup className={"form-group"}>
-                            <Label for="accountNumberTo">Recipient account number</Label>
-                            <Input
-                                type="text"
-                                name="accountNumberTo"
-                                id="accountNumberTo"
-                                value={formData.accountNumberTo}
-                                onChange={handleChange}
-                            />
-                        </FormGroup>
-                        {errorMessages.accountNumberTo && (
-                            <div className={"text-danger"}>{errorMessages.accountNumberTo}</div>
+                        {errors.bankAccountNumber && (
+                            <div className={"text-danger"}>{errors.bankAccountNumber}</div>
                         )}
-                        <FormGroup className={"form-group"}>
+                        <FormGroup className="form-group">
                             <Label for="amount">Amount</Label>
                             <Input
                                 type="text"
-                                name="amount"
                                 id="amount"
+                                name="amount"
                                 value={formData.amount}
                                 onChange={handleChange}
+                                className="form-control"
                             />
                         </FormGroup>
-                        {errorMessages.amount && (
-                            <div className={"text-danger"}>{errorMessages.amount}</div>
+                        {errors.amount && (
+                            <div className={"text-danger"}>{errors.amount}</div>
                         )}
-
                         <Button type="submit" className="btn-modern">
-                            Transfer money
+                            Add funds
                         </Button>
                     </Form>
                     {error && <div className="alert alert-danger mt-3">{error}</div>}
@@ -207,4 +192,4 @@ const Transfer = () => {
         </Container>
     )
 }
-export default Transfer;
+export default AddFunds;

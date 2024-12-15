@@ -37,7 +37,7 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Transaction committed successfully.");
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient funds for transfer");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
     }

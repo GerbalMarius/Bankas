@@ -39,6 +39,12 @@ public class TransactionService{
         if (toTo == null) {
             throw new IllegalArgumentException("Target account not found: " + transferredData.getAccountNumberTo());
         }
+        if (transferredData.getAmount().compareTo(from.getDailyLimit()) > 0) {
+            throw new IllegalArgumentException("Daily limit exceeded.");
+        }
+        if (transferredData.getAmount().compareTo(from.getMonthlyLimit()) > 0) {
+            throw new IllegalArgumentException("Monthly limit exceeded.");
+        }
 
         // Get the exchange rate from the source currency to the target currency
         BigDecimal exchangeRate = Exchanges.getRate(from.getCurrencyType().name(), toTo.getCurrencyType().name());

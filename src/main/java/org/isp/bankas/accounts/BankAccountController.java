@@ -50,6 +50,21 @@ public class BankAccountController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("banck account created successfully.");
     }
+    @PostMapping("/currentUser/update")
+    public ResponseEntity<String> updateBankAccountFunds(@Valid @RequestBody MoneyDTO input, HttpSession session){
+        Object user = session.getAttribute("user");
+        if (!(user instanceof UserDTO currentUser)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User actual = userService.findByEmail(currentUser.getEmail());
+        BankAccount to = bankAccountService.findByAccountName(input.getBankAccountNumber());
+        if (to == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Couldn't find the registered bank account.");
+        }
+        to.setBalance(to.getBalance().add(input.getAmount()));
+        bankAccountService.update(to);
+        return ResponseEntity.ok("Funds updated successfully.");
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleAuthenticationExceptions(MethodArgumentNotValidException ex) {

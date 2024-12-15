@@ -22,6 +22,9 @@ const Login = () => {
         if (location.search === "?logout") {
             setSuccess("Logged out successfully!")
         }
+        if (location.search === "?success") {
+                setSuccess("Account created successfully!")
+        }
     }, [location.search])
 
 
@@ -129,6 +132,9 @@ const Login = () => {
                         <Button className="btn-modern" type="submit">
                             Log in
                         </Button>
+                        <Link to="/register" className="btn-link-modern">
+                            Don't have an account?
+                        </Link>
                     </Form>
                     {error && <div className="alert alert-danger mt-3">{error}</div>}
                     {success && <div className="alert alert-success mt-3">{success}</div>}

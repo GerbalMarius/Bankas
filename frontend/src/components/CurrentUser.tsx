@@ -76,6 +76,7 @@ const CurrentUser = () => {
                   style={{position:"relative",fontWeight:"bolder", left:"500px", top:"220px", padding:"30px", fontSize:"large"}}>
                 Transfer money
             </Link>
+            <Link to={"/current/accounts/add"} className={"btn-top-left"} style={{position:"relative", left:"50px"}}>Add funds</Link>
             <Button className={"btn-normal"} onClick={handleLogout} style={{position:"absolute", right:"10px"}}>Logout</Button>
             <h1 className={"text-center"}>Hello {user.name}!</h1>
             <h2 className={"text-center"}>Email: {user.email}</h2>

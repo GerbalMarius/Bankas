@@ -3,7 +3,7 @@ import axios, {AxiosError} from "axios";
 import {Col, Container, Row, Form, FormGroup, Label, Button, Input} from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BACKEND_PREFIX} from "../App";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -15,6 +15,7 @@ const Register = () => {
     const [error, setError] = useState<string>('');
     const [success, setSuccess] = useState<string>('');
     const [errorMessages, setErrorMessages] = useState<any>([]);
+    const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -40,6 +41,7 @@ const Register = () => {
                     email: "",
                     address: "",
                 });
+                navigate("/login?success");
             }
         } catch (err) {
             // Handle AxiosError specifically

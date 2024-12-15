@@ -12,6 +12,7 @@ import CurrentUser from "./components/CurrentUser";
 import BankAccounts from "./components/BankAccounts";
 import BankAccCreationForm from "./components/BankAccCreationForm";
 import Transfer from "./components/Transfer";
+import AddFunds from "./components/AddFunds";
 
 export const BACKEND_PREFIX = "http://localhost:8080"
 
@@ -38,6 +39,7 @@ class App extends React.Component {
                         <Route path={"/current/accounts"} element={<BankAccounts/>}/>
                         <Route path={"/accounts/create"} element={<BankAccCreationForm/>}/>
                         <Route path={"/current/transferInit"} element={<Transfer/>}/>
+                        <Route path={"/current/accounts/add"} element={<AddFunds/>}/>
                     </Routes>
                 </main>
                 </div>
